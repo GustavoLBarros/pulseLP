@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Breezy Pro Local Font ─── */
+@font-face {
+  font-family: 'Breezy';
+  src: url('/fonts/Breezy Pro.ttf') format('truetype'),
+       url('/fonts/Breezy Pro.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Breezy';
+  src: url('/fonts/Breezy Pro Italic.ttf') format('truetype'),
+       url('/fonts/Breezy Pro Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --brand: #0C323B;
+  --accent: #60170E;
+  --offwhite: #F4EDE3;
+  --brand-light: #164756;
+  --brand-dark: #071e24;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--offwhite);
+  color: var(--brand);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Breezy', Georgia, serif;
+}
+
+em {
+  font-family: 'Breezy', Georgia, serif;
+  font-style: italic;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--offwhite);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand);
+  border-radius: 2px;
+}
