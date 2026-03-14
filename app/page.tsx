@@ -223,7 +223,6 @@ export default function LandingPagePulse() {
             <div className="mb-2">
               <img src="/images/pulselogo.png" alt="Pulse Logo" className="h-8 w-auto object-contain brightness-0" />
             </div>
-            <p className="text-xs text-[#0C323B]/40 tracking-widest">Posicionamento estratégico</p>
           </div>
           <div className="text-right space-y-2 text-xs tracking-widest text-[#0C323B]">
             <a href="https://www.instagram.com/socialmedia_pulse/" target='_blank' rel="noopener noreferrer" className="block hover:opacity-70 transition-opacity">Instagram: @socialmedia_pulse</a>
