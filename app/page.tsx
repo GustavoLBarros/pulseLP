@@ -154,7 +154,7 @@ export default function LandingPagePulse() {
         </div>
       </div>
 
-      {/* 4. DEPOIMENTOS */}
+      {/* 4. DEPOIMENTOS - ATUALIZADO PARA PRINTS VARIADOS */}
       <section id="depoimentos" className="py-32 bg-[#F4EDE3] border-y border-[#0C323B]/10 overflow-hidden relative z-20">
         <div className="max-w-7xl mx-auto px-6 mb-16">
           <span className="text-xs tracking-[0.3em] text-[#0C323B]/40 block mb-2 uppercase">Resultados</span>
@@ -176,9 +176,16 @@ export default function LandingPagePulse() {
                     <div key={star} className="w-3 h-3 bg-[#0C323B]"></div>
                   ))}
                 </div>
-                <div className="w-full aspect-video bg-[#0C323B]/5 border border-[#0C323B]/10 mb-6 overflow-hidden">
-                  <img src={item.img} alt={item.marca} className="w-full h-full object-cover pointer-events-none" />
+                
+                {/* CONTAINER DE IMAGEM CORRIGIDO: centraliza e contém prints de qualquer proporção */}
+                <div className="w-full h-64 bg-white/5 border border-[#0C323B]/10 mb-6 flex items-center justify-center overflow-hidden p-4">
+                  <img 
+                    src={item.img} 
+                    alt={item.marca} 
+                    className="max-w-full max-h-full object-contain pointer-events-none" 
+                  />
                 </div>
+                
                 <div className="border-t border-[#0C323B]/5 pt-6">
                   <p className="text-sm text-[#0C323B]">{item.marca}</p>
                   <p className="text-[#0C323B]/50 text-[11px] tracking-widest mt-1 uppercase">Estratégia Pulse</p>
