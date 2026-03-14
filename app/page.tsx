@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Instagram, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { WhatsAppOutlined } from '@ant-design/icons';
 import { motion, useAnimation } from 'framer-motion';
 import { gsap } from 'gsap';
@@ -45,20 +45,22 @@ export default function LandingPagePulse() {
       setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
     }
 
+    // GSAP Horizontal Scroll Fix
+    const totalPassos = passos.length;
     const pin = gsap.fromTo(
       sectionRef.current,
       { translateX: 0 },
       {
-        translateX: "-500vw",
+        translateX: `-${(totalPassos - 1) * 100}vw`,
         ease: "none",
         duration: 1,
         scrollTrigger: {
           trigger: triggerRef.current,
           start: "top top",
-          end: "2000 top",
+          end: () => `+=${sectionRef.current?.offsetWidth}`,
           scrub: 0.6,
           pin: true,
-          snap: 1 / (passos.length - 1),
+          invalidateOnRefresh: true,
         },
       }
     );
@@ -77,7 +79,7 @@ export default function LandingPagePulse() {
       window.removeEventListener('scroll', handleScroll);
       clearInterval(interval);
     };
-  }, [width, controls]);
+  }, [width, controls, passos.length]);
 
   return (
     <div className="bg-[#F4EDE3] text-[#0C323B] font-sans selection:bg-[#0C323B] selection:text-white overflow-x-hidden">
@@ -99,7 +101,7 @@ export default function LandingPagePulse() {
           <a href="#depoimentos" className="hover:opacity-60 transition-opacity">Depoimentos</a>
           <a href="#sobre" className="hover:opacity-60 transition-opacity">Sobre</a>
         </nav>
-        <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="text-white border border-white/30 px-5 py-2 rounded-full text-[10px] tracking-widest hover:bg-white hover:text-black transition-all">
+        <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="text-white border border-white/30 px-5 py-2 rounded-[4px] text-[10px] tracking-widest hover:bg-white hover:text-black transition-all">
           Contato
         </a>
       </header>
@@ -123,7 +125,7 @@ export default function LandingPagePulse() {
       </section>
 
       {/* 2. SEÇÃO PREMIUM */}
-      <section className="py-32 px-6 flex justify-center bg-[#F4EDE3]">
+      <section className="py-32 px-6 flex justify-center bg-[#F4EDE3] relative z-20">
         <div className="max-w-3xl text-center">
           <span className="text-xs tracking-widest text-[#0C323B]/40 mb-4 block uppercase">Especialização</span>
           <h2 className="text-3xl md:text-5xl font-light leading-snug text-[#0C323B]">
@@ -133,29 +135,27 @@ export default function LandingPagePulse() {
       </section>
 
       {/* 3. MÉTODO PULSE (HORIZONTAL) */}
-      <div id="metodo" className="overflow-hidden">
-        <div ref={triggerRef}>
-          <div ref={sectionRef} className="flex h-screen w-[600vw] items-center bg-[#0C323B]">
-            {passos.map((item, index) => (
-              <section key={index} className="h-screen w-screen flex items-center justify-center px-10 md:px-20 border-r border-[#F4EDE3]/10">
-                <div className="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center">
-                  <div>
-                    <span className="text-[#F4EDE3] text-8xl font-black opacity-10 block mb-4 italic">{item.step}</span>
-                    <h3 className="text-[#F4EDE3] text-3xl md:text-5xl mb-6">{item.title}</h3>
-                    <p className="text-[#F4EDE3]/70 text-lg md:text-xl leading-relaxed font-light">{item.desc}</p>
-                  </div>
-                  <div className="aspect-video md:aspect-square bg-white/5 overflow-hidden rounded-lg">
-                    <img src={item.img} alt={item.title} className="w-full h-full object-cover opacity-80" />
-                  </div>
+      <div id="metodo" ref={triggerRef} className="relative overflow-hidden bg-[#0C323B]">
+        <div ref={sectionRef} className="flex h-screen w-[600vw] items-center">
+          {passos.map((item, index) => (
+            <section key={index} className="h-screen w-screen flex items-center justify-center px-10 md:px-20 border-r border-[#F4EDE3]/10">
+              <div className="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                  <span className="text-[#F4EDE3] text-8xl font-black opacity-10 block mb-4 italic">{item.step}</span>
+                  <h3 className="text-[#F4EDE3] text-3xl md:text-5xl mb-6">{item.title}</h3>
+                  <p className="text-[#F4EDE3]/70 text-lg md:text-xl leading-relaxed font-light">{item.desc}</p>
                 </div>
-              </section>
-            ))}
-          </div>
+                <div className="aspect-video md:aspect-square bg-white/5 overflow-hidden rounded-lg">
+                  <img src={item.img} alt={item.title} className="w-full h-full object-cover opacity-80" />
+                </div>
+              </div>
+            </section>
+          ))}
         </div>
       </div>
 
-      {/* 4. DEPOIMENTOS (CARROSSEL ARRASTE + TEMPO) */}
-      <section id="depoimentos" className="py-32 bg-[#F4EDE3] border-y border-[#0C323B]/10 overflow-hidden">
+      {/* 4. DEPOIMENTOS */}
+      <section id="depoimentos" className="py-32 bg-[#F4EDE3] border-y border-[#0C323B]/10 overflow-hidden relative z-20">
         <div className="max-w-7xl mx-auto px-6 mb-16">
           <span className="text-xs tracking-[0.3em] text-[#0C323B]/40 block mb-2 uppercase">Resultados</span>
           <h2 className="text-4xl text-[#0C323B]">Depoimentos</h2>
@@ -190,7 +190,7 @@ export default function LandingPagePulse() {
       </section>
 
       {/* 5. SOBRE */}
-      <section id="sobre" className="py-32 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+      <section id="sobre" className="py-32 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center relative z-20">
         <div className="aspect-[4/5] w-full bg-[#0C323B]/5 border border-[#0C323B]/10 overflow-hidden">
           <img src="/images/laira-perfil.jpeg" alt="Laira" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
         </div>
@@ -206,7 +206,7 @@ export default function LandingPagePulse() {
       </section>
 
       {/* 6. CTA FINAL */}
-      <section className="py-40 px-6 bg-[#0C323B] text-[#F4EDE3] text-center flex flex-col items-center">
+      <section className="py-40 px-6 bg-[#0C323B] text-[#F4EDE3] text-center flex flex-col items-center relative z-20">
         <h2 className="text-4xl md:text-6xl mb-6 max-w-4xl">
           Pronto para parar de perder <span className="italic">cliente </span>para Instagram de concorrente?
         </h2>
@@ -217,7 +217,7 @@ export default function LandingPagePulse() {
       </section>
 
       {/* 7. FOOTER */}
-      <footer className="py-16 px-10 border-t border-[#0C323B]/10 bg-[#F4EDE3]">
+      <footer className="py-16 px-10 border-t border-[#0C323B]/10 bg-[#F4EDE3] relative z-20">
         <div className="flex flex-col md:flex-row justify-between items-end gap-10">
           <div>
             <div className="mb-2">
