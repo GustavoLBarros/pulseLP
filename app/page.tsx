@@ -30,11 +30,11 @@ export default function LandingPagePulse() {
   ];
 
   const depoimentos = [
-    { id: 1, marca: "Marca Cliente 01", img: "/images/depoimento-01.jpg" },
-    { id: 2, marca: "Marca Cliente 02", img: "/images/depoimento-02.jpg" },
-    { id: 3, marca: "Marca Cliente 03", img: "/images/depoimento-03.jpg" },
-    { id: 4, marca: "Marca Cliente 04", img: "/images/depoimento-04.jpg" },
-    { id: 5, marca: "Marca Cliente 05", img: "/images/depoimento-05.jpg" },
+    { id: 1, marca: "", img: "/images/depoimento-01.jpg" },
+    { id: 2, marca: "", img: "/images/depoimento-02.jpg" },
+    { id: 3, marca: "", img: "/images/depoimento-03.jpg" },
+    { id: 4, marca: "", img: "/images/depoimento-04.jpg" },
+    { id: 5, marca: "", img: "/images/depoimento-05.jpg" },
   ];
 
   useEffect(() => {
@@ -171,11 +171,6 @@ export default function LandingPagePulse() {
           >
             {depoimentos.map((item) => (
               <div key={item.id} className="min-w-[350px] md:min-w-[450px] bg-white border border-[#0C323B]/10 p-8 flex flex-col justify-between select-none">
-                <div className="flex gap-1 mb-6">
-                  {[...Array(5)].map((_, star) => (
-                    <div key={star} className="w-3 h-3 bg-[#0C323B]"></div>
-                  ))}
-                </div>
                 
                 {/* CONTAINER DE IMAGEM CORRIGIDO: centraliza e contém prints de qualquer proporção */}
                 <div className="w-full h-64 bg-white/5 border border-[#0C323B]/10 mb-6 flex items-center justify-center overflow-hidden p-4">
@@ -184,11 +179,6 @@ export default function LandingPagePulse() {
                     alt={item.marca} 
                     className="max-w-full max-h-full object-contain pointer-events-none" 
                   />
-                </div>
-                
-                <div className="border-t border-[#0C323B]/5 pt-6">
-                  <p className="text-sm text-[#0C323B]">{item.marca}</p>
-                  <p className="text-[#0C323B]/50 text-[11px] tracking-widest mt-1 uppercase">Estratégia Pulse</p>
                 </div>
               </div>
             ))}
