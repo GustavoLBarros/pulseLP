@@ -205,21 +205,24 @@ export default function LandingPagePulse() {
         </div>
       </section>
 
-      {/* PROVA SOCIAL - Logos Maiores e Mais Evidentes */}
+      {/* PROVA SOCIAL - Logos com Tamanho Visual Equilibrado */}
       <section className="py-16 bg-[#F4EDE3] border-b border-[#0C323B]/5 relative z-20">
         <div className="max-w-7xl mx-auto px-6">
-          <p className="text-center text-[11px] tracking-[0.3em] text-[#0C323B]/50 uppercase mb-10 font-bold">
+          <p className="text-center text-[11px] tracking-[0.3em] text-[#0C323B]/50 uppercase mb-12 font-bold">
             Marcas que confiam na Pulse
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-10 md:gap-x-24">
+          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
             {marcasParceiras.map((logo, index) => (
-              <img
-                key={index}
-                src={logo}
-                alt={`Logo da marca parceira ${index + 1}`}
-                // Aumentei h-8 para h-10 no mobile e h-10 para h-14 no desktop. Opacidade subiu para 60%.
-                className="h-10 md:h-14 w-auto object-contain grayscale opacity-60 mix-blend-multiply hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-              />
+              <div 
+                key={index} 
+                className="flex items-center justify-center w-32 h-16 md:w-48 md:h-20"
+              >
+                <img
+                  src={logo}
+                  alt={`Logo da marca parceira ${index + 1}`}
+                  className="max-w-full max-h-full object-contain grayscale opacity-70 mix-blend-multiply hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                />
+              </div>
             ))}
           </div>
         </div>
