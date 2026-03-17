@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Menu, X } from 'lucide-react';
-import { WhatsAppOutlined } from '@ant-design/icons';
+import { ArrowLeft, ArrowRight, Menu, X, Mail } from 'lucide-react';
+import { WhatsAppOutlined, InstagramOutlined } from '@ant-design/icons';
 import { motion, useAnimation } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
@@ -10,18 +10,23 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function LandingPagePulse() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [width, setWidth] = useState(0);
-  const [isInMethodSection, setIsInMethodSection] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
   const controls = useAnimation();
 
   const whatsappLink = "https://wa.me/5519993775562?text=Olá!%20Vim%20da%20landing%20page%20e%20quero%20entender%20como%20a%20Pulse%20pode%20me%20ajudar%20com%20posicionamento%20estratégico.";
+
+  const marcasParceiras = [
+    "/images/logo1.PNG",
+    "/images/logo2.jpeg",
+    "/images/logo3.PNG",
+    "/images/logo4.PNG",
+  ];
 
   const passos = [
     { step: "01", title: "DIAGNÓSTICO PROFUNDO", desc: "Analisamos seu Instagram atual, concorrência e oportunidades. Identificamos onde você está perdendo cliente.", img: "/images/metodo-01.jpg" },
@@ -43,18 +48,12 @@ export default function LandingPagePulse() {
     { id: 8, marca: "", img: "/images/depoimento-08.jpg" },
   ];
 
-  const handleSkipMethod = () => {
-    const depoimentosSection = document.getElementById('depoimentos');
-    if (!depoimentosSection) return;
-    const targetY = depoimentosSection.getBoundingClientRect().top + window.scrollY;
-    if (triggerRef.current) triggerRef.current.style.visibility = 'hidden';
-    ScrollTrigger.getAll().forEach(t => t.disable(false));
-    window.scrollTo({ top: targetY, behavior: 'instant' });
-    setTimeout(() => {
-      ScrollTrigger.getAll().forEach(t => t.enable());
-      ScrollTrigger.refresh();
-      if (triggerRef.current) triggerRef.current.style.visibility = 'visible';
-    }, 100);
+  const nextStep = () => {
+    setCurrentStep((prev) => (prev === passos.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevStep = () => {
+    setCurrentStep((prev) => (prev === 0 ? passos.length - 1 : prev - 1));
   };
 
   useEffect(() => {
@@ -72,40 +71,6 @@ export default function LandingPagePulse() {
       setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
     }
 
-    // Scroll horizontal GSAP apenas no desktop
-    let pin: gsap.core.Tween | null = null;
-    if (!isMobile) {
-      const totalPassos = passos.length;
-      pin = gsap.fromTo(
-        sectionRef.current,
-        { translateX: 0 },
-        {
-          translateX: `-${(totalPassos - 1) * 100}vw`,
-          ease: "none",
-          duration: 1,
-          scrollTrigger: {
-            trigger: triggerRef.current,
-            start: "top top",
-            end: () => `+=${sectionRef.current?.offsetWidth}`,
-            scrub: 0.6,
-            pin: true,
-            invalidateOnRefresh: true,
-            onEnter: () => setIsInMethodSection(true),
-            onLeave: () => setIsInMethodSection(false),
-            onEnterBack: () => setIsInMethodSection(true),
-            onLeaveBack: () => setIsInMethodSection(false),
-            onUpdate: (self) => {
-              if (self.progress > 0 && self.progress < 1) {
-                setIsInMethodSection(true);
-              } else {
-                setIsInMethodSection(false);
-              }
-            },
-          },
-        }
-      );
-    }
-
     let xPos = 0;
     const interval = setInterval(() => {
       xPos = xPos <= -width ? 0 : xPos - 350;
@@ -116,11 +81,10 @@ export default function LandingPagePulse() {
     }, 5000);
 
     return () => {
-      pin?.kill();
       window.removeEventListener('scroll', handleScroll);
       clearInterval(interval);
     };
-  }, [width, controls, passos.length, isMobile]);
+  }, [width, controls]);
 
   return (
     <div className="bg-[#F4EDE3] text-[#0C323B] font-sans selection:bg-[#0C323B] selection:text-white overflow-x-hidden">
@@ -130,16 +94,6 @@ export default function LandingPagePulse() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         html { scroll-behavior: smooth; }
       `}} />
-
-      {/* Botão pular seção — apenas desktop */}
-      {isInMethodSection && !isMobile && (
-        <button
-          onClick={handleSkipMethod}
-          className="fixed bottom-8 right-8 z-[100] flex items-center gap-2 bg-[#F4EDE3] text-[#0C323B] px-5 py-3 rounded-full text-[10px] tracking-widest font-semibold shadow-xl hover:bg-white hover:scale-105 transition-all duration-200 border border-[#0C323B]/10"
-        >
-          Pular seção <ArrowRight size={12} />
-        </button>
-      )}
 
       {/* Menu mobile overlay */}
       {menuOpen && (
@@ -186,7 +140,6 @@ export default function LandingPagePulse() {
           <img src="/images/pulselogo.png" alt="Pulse Logo" className="h-7 sm:h-8 w-auto object-contain" />
         </div>
 
-        {/* Nav desktop */}
         <nav className="hidden md:flex items-center gap-8 text-white text-xs tracking-widest">
           <a href="#inicio" className="hover:opacity-60 transition-opacity">Início</a>
           <a href="#metodo" className="hover:opacity-60 transition-opacity">Método</a>
@@ -194,7 +147,6 @@ export default function LandingPagePulse() {
           <a href="#sobre" className="hover:opacity-60 transition-opacity">Sobre</a>
         </nav>
 
-        {/* Direita: botão contato desktop + hamburguer mobile */}
         <div className="flex items-center gap-3">
           <a
             href={whatsappLink}
@@ -253,41 +205,88 @@ export default function LandingPagePulse() {
         </div>
       </section>
 
+      {/* PROVA SOCIAL - Logos Maiores e Mais Evidentes */}
+      <section className="py-16 bg-[#F4EDE3] border-b border-[#0C323B]/5 relative z-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <p className="text-center text-[11px] tracking-[0.3em] text-[#0C323B]/50 uppercase mb-10 font-bold">
+            Marcas que confiam na Pulse
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-10 md:gap-x-24">
+            {marcasParceiras.map((logo, index) => (
+              <img
+                key={index}
+                src={logo}
+                alt={`Logo da marca parceira ${index + 1}`}
+                // Aumentei h-8 para h-10 no mobile e h-10 para h-14 no desktop. Opacidade subiu para 60%.
+                className="h-10 md:h-14 w-auto object-contain grayscale opacity-60 mix-blend-multiply hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 2. SEÇÃO PREMIUM */}
       <section className="py-20 sm:py-32 px-6 flex justify-center bg-[#F4EDE3] relative z-20">
         <div className="max-w-3xl text-center">
           <span className="text-xs tracking-widest text-[#0C323B]/40 mb-4 block uppercase">Especialização</span>
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-light leading-snug text-[#0C323B]">
-            Não atendemos qualquer perfil. Trabalhamos exclusivamente com marcas de alto padrão que buscam o <span className="italic">cliente</span> ideal, não volume.
+            Não atendemos qualquer perfil. <br /> Trabalhamos exclusivamente com marcas de alto padrão que buscam o <span className="italic">cliente</span> ideal, não volume.
           </h2>
         </div>
       </section>
 
-      {/* 3. MÉTODO PULSE — Desktop: scroll horizontal pinado */}
-      <div id="metodo" ref={triggerRef} className="relative overflow-hidden bg-[#0C323B] hidden md:block">
-        <div ref={sectionRef} className="flex h-screen w-[600vw] items-center">
-          {passos.map((item, index) => (
-            <section
-              key={index}
-              className="h-screen w-screen flex items-center justify-center px-10 md:px-20 border-r border-[#F4EDE3]/10"
+      {/* 3. MÉTODO PULSE — Desktop */}
+      <div id="metodo" className="bg-[#0C323B] py-24 hidden md:block">
+        <div className="max-w-7xl mx-auto px-12 mb-16">
+           <span className="text-xs tracking-[0.3em] text-[#F4EDE3]/40 block mb-2 uppercase">Nossa Metodologia</span>
+           <h2 className="text-4xl md:text-6xl text-[#F4EDE3] font-light italic">Método Pulse</h2>
+        </div>
+
+        <div className="relative w-full max-w-7xl mx-auto px-12 flex items-center">
+          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 z-30 pointer-events-none">
+            <button 
+              onClick={prevStep}
+              className="pointer-events-auto bg-[#F4EDE3]/5 hover:bg-[#F4EDE3] hover:text-[#0C323B] text-[#F4EDE3] p-4 rounded-full border border-[#F4EDE3]/20 transition-all duration-300"
             >
-              <div className="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                  <span className="text-[#F4EDE3] text-8xl font-black opacity-10 block mb-4 italic">{item.step}</span>
-                  <h3 className="text-[#F4EDE3] text-3xl md:text-5xl mb-6">{item.title}</h3>
-                  <p className="text-[#F4EDE3]/70 text-lg md:text-xl leading-relaxed font-light">{item.desc}</p>
+              <ArrowLeft size={24} />
+            </button>
+            <button 
+              onClick={nextStep}
+              className="pointer-events-auto bg-[#F4EDE3]/5 hover:bg-[#F4EDE3] hover:text-[#0C323B] text-[#F4EDE3] p-4 rounded-full border border-[#F4EDE3]/20 transition-all duration-300"
+            >
+              <ArrowRight size={24} />
+            </button>
+          </div>
+
+          <div className="overflow-hidden w-full">
+            <div 
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{ transform: `translateX(-${currentStep * 100}%)` }}
+            >
+              {passos.map((item, index) => (
+                <div key={index} className="min-w-full flex items-center justify-center">
+                  <div className="grid grid-cols-2 gap-16 items-center w-full">
+                    <div>
+                      <span className="text-[#F4EDE3] text-8xl font-black opacity-10 block mb-4 italic">{item.step}</span>
+                      <h3 className="text-[#F4EDE3] text-3xl md:text-5xl mb-6">{item.title}</h3>
+                      <p className="text-[#F4EDE3]/70 text-lg md:text-xl leading-relaxed font-light">{item.desc}</p>
+                    </div>
+                    <div className="aspect-square bg-white/5 overflow-hidden rounded-lg shadow-2xl">
+                      <img src={item.img} alt={item.title} className="w-full h-full object-cover opacity-80" />
+                    </div>
+                  </div>
                 </div>
-                <div className="aspect-square bg-white/5 overflow-hidden rounded-lg">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover opacity-80" />
-                </div>
-              </div>
-            </section>
-          ))}
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 3. MÉTODO PULSE — Mobile/Tablet: cards verticais */}
-      <div className="bg-[#0C323B] md:hidden" id="metodo-mobile">
+      {/* 3. MÉTODO PULSE — Mobile */}
+      <div className="bg-[#0C323B] md:hidden py-16" id="metodo-mobile">
+        <div className="px-6 mb-12">
+           <h2 className="text-3xl text-[#F4EDE3] font-light italic">Método Pulse</h2>
+        </div>
         {passos.map((item, index) => (
           <div key={index} className="px-6 py-14 sm:py-16 border-b border-[#F4EDE3]/10">
             <span className="text-[#F4EDE3] text-6xl sm:text-7xl font-black opacity-10 block mb-2 italic">{item.step}</span>
@@ -363,21 +362,62 @@ export default function LandingPagePulse() {
         </a>
       </section>
 
-      {/* 7. FOOTER */}
-      <footer className="py-12 sm:py-16 px-6 sm:px-10 border-t border-[#0C323B]/10 bg-[#F4EDE3] relative z-20">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 sm:gap-10">
-          <div>
-            <img src="/images/pulselogo.png" alt="Pulse Logo" className="h-7 sm:h-8 w-auto object-contain brightness-0" />
+      {/* 7. FOOTER PREMIUM */}
+      <footer className="py-20 px-6 sm:px-10 border-t border-[#0C323B]/10 bg-[#F4EDE3] relative z-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
+            
+            <div className="md:col-span-1">
+              <img src="/images/pulselogo.png" alt="Pulse Logo" className="h-8 w-auto object-contain brightness-0 mb-6" />
+              <p className="text-[#0C323B]/60 text-xs leading-relaxed max-w-[200px] tracking-wide">
+                Elevando o padrão de posicionamento digital para marcas que não aceitam o comum.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] tracking-[0.2em] font-bold uppercase text-[#0C323B] mb-6">Navegação</h4>
+              <nav className="flex flex-col gap-4 text-xs tracking-widest text-[#0C323B]/70">
+                <a href="#inicio" className="hover:text-[#60170E] transition-colors">Início</a>
+                <a href="#metodo" className="hover:text-[#60170E] transition-colors">Método Pulse</a>
+                <a href="#depoimentos" className="hover:text-[#60170E] transition-colors">Resultados</a>
+                <a href="#sobre" className="hover:text-[#60170E] transition-colors">Sobre</a>
+              </nav>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] tracking-[0.2em] font-bold uppercase text-[#0C323B] mb-6">Contato</h4>
+              <div className="flex flex-col gap-4 text-xs tracking-widest text-[#0C323B]/70">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#60170E] transition-colors">
+                  <WhatsAppOutlined /> WhatsApp
+                </a>
+                <a href="mailto:contato@socialmediapulse.com" className="flex items-center gap-2 hover:text-[#60170E] transition-colors">
+                  <Mail size={14} /> E-mail
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] tracking-[0.2em] font-bold uppercase text-[#0C323B] mb-6">Social</h4>
+              <div className="flex flex-col gap-4 text-xs tracking-widest text-[#0C323B]/70">
+                <a 
+                  href="https://www.instagram.com/socialmedia_pulse/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-center gap-2 hover:text-[#60170E] transition-colors"
+                >
+                  <InstagramOutlined /> @socialmedia_pulse
+                </a>
+              </div>
+            </div>
           </div>
-          <div className="text-left sm:text-right space-y-2 text-xs tracking-widest text-[#0C323B]">
-            <a href="https://www.instagram.com/socialmedia_pulse/" target="_blank" rel="noopener noreferrer" className="block hover:opacity-70 transition-opacity">
-              Instagram: @socialmedia_pulse
-            </a>
+
+          <div className="pt-8 border-t border-[#0C323B]/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[9px] tracking-[0.1em] text-[#0C323B]/40 uppercase font-medium">
+            <div className="flex gap-6">
+              <span>© 2026 Pulse Social Media</span>
+              <span className="hidden sm:inline">•</span>
+              <span>Todos os direitos reservados</span>
+            </div>
           </div>
-        </div>
-        <div className="mt-12 sm:mt-20 text-[10px] text-[#0C323B]/30 flex flex-col sm:flex-row justify-between gap-2">
-          <span>© 2026 Pulse Social Media</span>
-          <span>Todos os direitos reservados</span>
         </div>
       </footer>
     </div>
