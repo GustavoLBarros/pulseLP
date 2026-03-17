@@ -393,8 +393,8 @@ export default function LandingPagePulse() {
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#60170E] transition-colors">
                   <WhatsAppOutlined /> WhatsApp
                 </a>
-                <a href="mailto:contato@socialmediapulse.com" className="flex items-center gap-2 hover:text-[#60170E] transition-colors">
-                  <Mail size={14} /> E-mail
+                <a className="flex items-center gap-2 hover:text-[#60170E] transition-colors">
+                  <Mail size={14} /> Socialmpulse@gmail.com
                 </a>
               </div>
             </div>
