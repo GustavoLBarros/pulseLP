@@ -23,7 +23,7 @@ export default function LandingPagePulse() {
 
   const marcasParceiras = [
     "/images/logo1.PNG",
-    "/images/logo2.jpeg",
+    "/images/logo2.png",
     "/images/logo3.PNG",
     "/images/logo4.PNG",
   ];
