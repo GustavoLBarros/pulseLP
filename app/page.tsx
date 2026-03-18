@@ -170,7 +170,7 @@ export default function LandingPagePulse() {
 
       <section
         id="inicio"
-        className="relative flex flex-col items-start min-h-screen px-6 sm:px-8 md:px-20 overflow-hidden z-10"
+        className="relative flex flex-col items-center md:items-start min-h-screen px-6 sm:px-8 md:px-20 overflow-hidden z-10"
         style={{ justifyContent: 'center' }}
       >
         <img
@@ -181,23 +181,27 @@ export default function LandingPagePulse() {
         />
         <div className="absolute inset-0 bg-black/35 z-[1]" />
         <div
-          className="absolute bottom-0 left-0 w-[55%] h-[60%] z-[2] pointer-events-none"
+          className="absolute bottom-0 left-0 w-full md:w-[55%] h-[60%] z-[2] pointer-events-none"
           style={{
             backdropFilter: 'blur(18px)',
             WebkitBackdropFilter: 'blur(18px)',
-            maskImage: 'radial-gradient(ellipse 80% 80% at 0% 100%, black 0%, transparent 70%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 0% 100%, black 0%, transparent 70%)',
+            maskImage: isMobile 
+              ? 'radial-gradient(ellipse 100% 100% at 50% 100%, black 0%, transparent 80%)' 
+              : 'radial-gradient(ellipse 80% 80% at 0% 100%, black 0%, transparent 70%)',
+            WebkitMaskImage: isMobile 
+              ? 'radial-gradient(ellipse 100% 100% at 50% 100%, black 0%, transparent 80%)' 
+              : 'radial-gradient(ellipse 80% 80% at 0% 100%, black 0%, transparent 70%)',
           }}
         />
-        <div className="relative z-10 w-full max-w-xs sm:max-w-xl md:max-w-3xl" style={{ marginTop: '-50px' }}>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl mb-6 sm:mb-8 text-[#F4EDE3] text-left leading-tight">
+        <div className="relative z-10 w-full max-w-xs sm:max-w-xl md:max-w-3xl flex flex-col items-center md:items-start text-center md:text-left pt-20 md:pt-0" style={{ marginTop: isMobile ? '40px' : '-50px' }}>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl mb-6 sm:mb-8 text-[#F4EDE3] leading-tight">
             Posicionamento <span className="italic">estratégico</span> transforma visitante em <span className="italic">cliente</span>.
           </h1>
           <a
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#60170E] text-[#F4EDE3] px-6 py-4 sm:px-10 sm:py-5 rounded-[8px] inline-flex items-center gap-2 sm:gap-3 hover:brightness-110 transition-all mb-4 text-xs sm:text-sm tracking-widest"
+            className="bg-[#60170E] text-[#F4EDE3] px-6 py-4 sm:px-10 sm:py-5 rounded-[8px] inline-flex items-center gap-2 sm:gap-3 hover:brightness-110 transition-all mb-6 text-xs sm:text-sm tracking-widest"
           >
             <WhatsAppOutlined style={{ fontSize: '16px' }} /> Quero ser cliente Pulse <ArrowRight size={15} />
           </a>
