@@ -56,6 +56,10 @@ export default function LandingPagePulse() {
     setCurrentStep((prev) => (prev === 0 ? passos.length - 1 : prev - 1));
   };
 
+  const goToStep = (index: number) => {
+    setCurrentStep(index);
+  };
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -95,7 +99,6 @@ export default function LandingPagePulse() {
         html { scroll-behavior: smooth; }
       `}} />
 
-      {/* Menu mobile overlay */}
       {menuOpen && (
         <div className="fixed inset-0 bg-[#0C323B] z-[60] flex flex-col items-center justify-center gap-10">
           <button
@@ -134,7 +137,6 @@ export default function LandingPagePulse() {
         </div>
       )}
 
-      {/* HEADER */}
       <header className={`fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 sm:px-6 md:px-12 transition-all duration-300 ${isScrolled ? 'bg-[#0C323B]/60 backdrop-blur-md py-3' : 'bg-transparent py-5 sm:py-6'}`}>
         <div>
           <img src="/images/pulselogo.png" alt="Pulse Logo" className="h-7 sm:h-8 w-auto object-contain" />
@@ -166,7 +168,6 @@ export default function LandingPagePulse() {
         </div>
       </header>
 
-      {/* 1. HERO */}
       <section
         id="inicio"
         className="relative flex flex-col items-start min-h-screen px-6 sm:px-8 md:px-20 overflow-hidden z-10"
@@ -205,7 +206,6 @@ export default function LandingPagePulse() {
         </div>
       </section>
 
-      {/* PROVA SOCIAL - Logos com Tamanho Visual Equilibrado */}
       <section className="py-16 bg-[#F4EDE3] border-b border-[#0C323B]/5 relative z-20">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-center text-[11px] tracking-[0.3em] text-[#0C323B]/50 uppercase mb-12 font-bold">
@@ -228,7 +228,6 @@ export default function LandingPagePulse() {
         </div>
       </section>
 
-      {/* 2. SEÇÃO PREMIUM */}
       <section className="py-20 sm:py-32 px-6 flex justify-center bg-[#F4EDE3] relative z-20">
         <div className="max-w-3xl text-center">
           <span className="text-xs tracking-widest text-[#0C323B]/40 mb-4 block uppercase">Especialização</span>
@@ -238,36 +237,34 @@ export default function LandingPagePulse() {
         </div>
       </section>
 
-      {/* 3. MÉTODO PULSE — Desktop */}
-      <div id="metodo" className="bg-[#0C323B] py-24 hidden md:block">
+      <div id="metodo" className="bg-[#0C323B] py-24 hidden md:block overflow-hidden">
         <div className="max-w-7xl mx-auto px-12 mb-16">
            <span className="text-xs tracking-[0.3em] text-[#F4EDE3]/40 block mb-2 uppercase">Nossa Metodologia</span>
            <h2 className="text-4xl md:text-6xl text-[#F4EDE3] font-light italic">Método Pulse</h2>
         </div>
 
-        <div className="relative w-full max-w-7xl mx-auto px-12 flex items-center">
-          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 z-30 pointer-events-none">
-            <button 
-              onClick={prevStep}
-              className="pointer-events-auto bg-[#F4EDE3]/5 hover:bg-[#F4EDE3] hover:text-[#0C323B] text-[#F4EDE3] p-4 rounded-full border border-[#F4EDE3]/20 transition-all duration-300"
-            >
-              <ArrowLeft size={24} />
-            </button>
-            <button 
-              onClick={nextStep}
-              className="pointer-events-auto bg-[#F4EDE3]/5 hover:bg-[#F4EDE3] hover:text-[#0C323B] text-[#F4EDE3] p-4 rounded-full border border-[#F4EDE3]/20 transition-all duration-300"
-            >
-              <ArrowRight size={24} />
-            </button>
-          </div>
+        <div className="relative w-full max-w-7xl mx-auto px-12">
+          <button 
+            onClick={prevStep}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-50 bg-[#F4EDE3]/5 hover:bg-[#F4EDE3] hover:text-[#0C323B] text-[#F4EDE3] p-4 rounded-full border border-[#F4EDE3]/20 transition-all duration-300"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          
+          <button 
+            onClick={nextStep}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-50 bg-[#F4EDE3]/5 hover:bg-[#F4EDE3] hover:text-[#0C323B] text-[#F4EDE3] p-4 rounded-full border border-[#F4EDE3]/20 transition-all duration-300"
+          >
+            <ArrowRight size={24} />
+          </button>
 
-          <div className="overflow-hidden w-full">
+          <div className="overflow-hidden">
             <div 
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentStep * 100}%)` }}
             >
               {passos.map((item, index) => (
-                <div key={index} className="min-w-full flex items-center justify-center">
+                <div key={index} className="min-w-full px-16">
                   <div className="grid grid-cols-2 gap-16 items-center w-full">
                     <div>
                       <span className="text-[#F4EDE3] text-8xl font-black opacity-10 block mb-4 italic">{item.step}</span>
@@ -282,10 +279,20 @@ export default function LandingPagePulse() {
               ))}
             </div>
           </div>
+
+          <div className="flex justify-center gap-3 mt-12">
+            {passos.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToStep(index)}
+                className={`h-2 transition-all duration-300 rounded-full ${currentStep === index ? 'w-8 bg-[#F4EDE3]' : 'w-2 bg-[#F4EDE3]/20 hover:bg-[#F4EDE3]/40'}`}
+                aria-label={`Ir para passo ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* 3. MÉTODO PULSE — Mobile */}
       <div className="bg-[#0C323B] md:hidden py-16" id="metodo-mobile">
         <div className="px-6 mb-12">
            <h2 className="text-3xl text-[#F4EDE3] font-light italic">Método Pulse</h2>
@@ -302,7 +309,6 @@ export default function LandingPagePulse() {
         ))}
       </div>
 
-      {/* 4. DEPOIMENTOS */}
       <section id="depoimentos" className="py-20 sm:py-32 bg-[#F4EDE3] border-y border-[#0C323B]/10 overflow-hidden relative z-20">
         <div className="max-w-7xl mx-auto px-6 mb-10 sm:mb-16">
           <span className="text-xs tracking-[0.3em] text-[#0C323B]/40 block mb-2 uppercase">Resultados</span>
@@ -333,7 +339,6 @@ export default function LandingPagePulse() {
         </motion.div>
       </section>
 
-      {/* 5. SOBRE */}
       <section id="sobre" className="py-20 sm:py-32 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center relative z-20">
         <div className="aspect-[4/5] w-full max-w-sm mx-auto md:max-w-none bg-[#0C323B]/5 border border-[#0C323B]/10 overflow-hidden">
           <img src="/images/laira-perfil.jpeg" alt="Laira" className="w-full h-full object-cover" />
@@ -349,7 +354,6 @@ export default function LandingPagePulse() {
         </div>
       </section>
 
-      {/* 6. CTA FINAL */}
       <section className="py-24 sm:py-40 px-6 bg-[#0C323B] text-[#F4EDE3] text-center flex flex-col items-center relative z-20">
         <h2 className="text-3xl sm:text-4xl md:text-6xl mb-6 max-w-4xl leading-tight">
           Pronto para parar de perder <span className="italic">cliente </span>para Instagram de concorrente?
@@ -365,16 +369,12 @@ export default function LandingPagePulse() {
         </a>
       </section>
 
-      {/* 7. FOOTER PREMIUM */}
       <footer className="py-20 px-6 sm:px-10 border-t border-[#0C323B]/10 bg-[#F4EDE3] relative z-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
             
             <div className="md:col-span-1">
               <img src="/images/pulselogo.png" alt="Pulse Logo" className="h-8 w-auto object-contain brightness-0 mb-6" />
-              <p className="text-[#0C323B]/60 text-xs leading-relaxed max-w-[200px] tracking-wide">
-                Elevando o padrão de posicionamento digital para marcas que não aceitam o comum.
-              </p>
             </div>
 
             <div>
