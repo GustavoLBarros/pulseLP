@@ -175,7 +175,8 @@ export default function LandingPagePulse() {
       >
         <img
           src="/images/bghero.png"
-          className="absolute inset-0 w-full h-full object-cover z-0 object-center md:object-left"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{ objectPosition: isMobile ? '70% center' : 'left center' }}
           alt=""
         />
         <div className="absolute inset-0 bg-black/35 z-[1]" />
