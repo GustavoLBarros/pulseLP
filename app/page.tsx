@@ -99,27 +99,28 @@ export default function LandingPagePulse() {
         html { scroll-behavior: smooth; }
       `}} />
 
+      {/* MENU MOBILE CORRIGIDO */}
       {menuOpen && (
-        <div className="fixed inset-0 bg-[#0C323B] z-[60] flex flex-col items-center justify-center gap-10">
+        <div className="fixed inset-0 bg-[#0C323B] z-[100] flex flex-col items-center justify-center gap-10 overflow-hidden">
           <button
             onClick={() => setMenuOpen(false)}
-            className="absolute top-5 right-5 text-white"
+            className="absolute top-8 right-8 text-white p-2"
             aria-label="Fechar menu"
           >
-            <X size={28} />
+            <X size={32} />
           </button>
-          <nav className="flex flex-col items-center gap-8 text-white text-sm tracking-widest">
+          <nav className="flex flex-col items-center gap-8 text-white text-lg tracking-widest font-light">
             {[
-              { href: '#inicio', label: 'Início' },
-              { href: '#metodo', label: 'Método' },
-              { href: '#depoimentos', label: 'Depoimentos' },
-              { href: '#sobre', label: 'Sobre' },
+              { href: '#inicio', label: 'INÍCIO' },
+              { href: '#metodo-mobile', label: 'MÉTODO' },
+              { href: '#depoimentos', label: 'DEPOIMENTOS' },
+              { href: '#sobre', label: 'SOBRE' },
             ].map(({ href, label }) => (
               <a
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className="hover:opacity-60 transition-opacity"
+                className="hover:opacity-60 transition-opacity p-2"
               >
                 {label}
               </a>
@@ -130,9 +131,9 @@ export default function LandingPagePulse() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMenuOpen(false)}
-            className="bg-[#60170E] text-[#F4EDE3] px-8 py-4 rounded-[8px] inline-flex items-center gap-3 text-xs tracking-widest"
+            className="bg-[#60170E] text-[#F4EDE3] px-8 py-4 rounded-[8px] inline-flex items-center gap-3 text-xs tracking-widest mt-4"
           >
-            <WhatsAppOutlined style={{ fontSize: '16px' }} /> Falar no WhatsApp
+            <WhatsAppOutlined style={{ fontSize: '18px' }} /> FALAR NO WHATSAPP
           </a>
         </div>
       )}
@@ -160,10 +161,10 @@ export default function LandingPagePulse() {
           </a>
           <button
             onClick={() => setMenuOpen(true)}
-            className="md:hidden text-white p-1"
+            className="md:hidden text-white p-2"
             aria-label="Abrir menu"
           >
-            <Menu size={24} />
+            <Menu size={28} />
           </button>
         </div>
       </header>
