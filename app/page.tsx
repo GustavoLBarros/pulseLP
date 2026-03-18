@@ -175,7 +175,7 @@ export default function LandingPagePulse() {
       >
         <img
           src="/images/bghero.png"
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full object-cover z-0 object-center md:object-left"
           alt=""
         />
         <div className="absolute inset-0 bg-black/35 z-[1]" />
