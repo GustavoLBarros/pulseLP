@@ -19,7 +19,7 @@ export default function LandingPagePulse() {
   const [currentStep, setCurrentStep] = useState(0);
   const controls = useAnimation();
 
-  const whatsappLink = "https://wa.me/5519991200074?text=Olá!%20Vim%20da%20landing%20page%20e%20quero%20entender%20como%20a%20Pulse%20pode%20me%20ajudar%20com%20posicionamento%20estratégico.";
+  const whatsappLink = "https://wa.me/5519999481859?text=Olá!%20Vim%20da%20landing%20page%20e%20quero%20entender%20como%20a%20Pulse%20pode%20me%20ajudar%20com%20posicionamento%20estratégico.";
 
   const marcasParceiras = [
     "/images/logo1.PNG",
